@@ -24,6 +24,6 @@ export class UserService {
       .findOne(condition)
       .select(['-_id', '-__v'])
       .exec();
-    return doc.toObject();
+    return doc ? doc.toObject() : null;
   }
 }
