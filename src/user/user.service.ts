@@ -11,7 +11,7 @@ export class UserService {
   ) {}
 
   async all(): Promise<User[]> {
-    return this.userModel.find({});
+    return this.userModel.find({}).select(['-_id', '-__v']).lean().exec();
   }
 
   async create(data): Promise<User> {
@@ -23,7 +23,8 @@ export class UserService {
     const doc = await this.userModel
       .findOne(condition)
       .select(['-_id', '-__v'])
+      .lean()
       .exec();
-    return doc ? doc.toObject() : null;
+    return doc;
   }
 }
