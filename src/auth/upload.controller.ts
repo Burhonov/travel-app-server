@@ -10,33 +10,27 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
-import { diskStorage } from 'multer';
-import { v4 as uuidv4 } from 'uuid';
-import { extname } from 'path';
-import { format } from 'url';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary/lib';
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: process.env.CLOUDINARY_FOLDER,
+  },
+});
 
 @Controller()
 export class UploadController {
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename(_, file: Express.Multer.File, callback): void {
-          const uniqueName = uuidv4();
-          return callback(null, `${uniqueName}${extname(file.originalname)}`);
-        },
-      }),
+      storage: storage,
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    const fileUrl = format({
-      protocol: req.protocol,
-      host: req.get('host'),
-      pathname: file.path,
-    });
     return {
-      url: fileUrl,
+      url: file.path,
     };
   }
 
