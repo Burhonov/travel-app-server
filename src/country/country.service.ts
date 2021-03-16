@@ -14,7 +14,12 @@ export class CountryService {
   ) {}
 
   async all(): Promise<Country[]> {
-    return this.countryModel.find({}).select(['-_id', '-__v']).lean().exec();
+    return this.countryModel
+      .find({})
+      .select(['-_id', '-__v'])
+      .populate('gallery')
+      .lean()
+      .exec();
   }
 
   async insertMany(data): Promise<any[]> {
