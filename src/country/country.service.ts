@@ -18,27 +18,20 @@ export class CountryService {
   }
 
   async insertMany(data): Promise<any[]> {
-    try {
-      const res = await Promise.all(
-        data.map(async (country) => {
-          const { gallery, ...countryData } = country;
-          const galleryIds = [];
-          if (Array.isArray(gallery) && gallery.length > 0) {
-            const galRes = await this.galleryModel.collection.insertMany(
-              gallery,
-            );
-            galRes.ops.forEach(({ _id }) => galleryIds.push(_id));
-          }
-          return await this.countryModel.create({
-            ...countryData,
-            gallery: galleryIds,
-          });
-        }),
-      );
-      console.log('res', res);
-      return res;
-    } catch (e) {
-      console.error('ee', e);
-    }
+    const res = await Promise.all(
+      data.map(async (country) => {
+        const { gallery, ...countryData } = country;
+        const galleryIds = [];
+        if (Array.isArray(gallery) && gallery.length > 0) {
+          const galRes = await this.galleryModel.collection.insertMany(gallery);
+          galRes.ops.forEach(({ _id }) => galleryIds.push(_id));
+        }
+        return await this.countryModel.create({
+          ...countryData,
+          gallery: galleryIds,
+        });
+      }),
+    );
+    return res;
   }
 }
