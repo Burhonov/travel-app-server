@@ -12,7 +12,6 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   await app.listen(process.env.PORT);
 }
 bootstrap();

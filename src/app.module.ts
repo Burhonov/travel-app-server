@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { CountryModule } from './country/country.module';
 const { DB_HOST, DB_USER, DB_PASS, DB_NAME } = process.env;
 
 @Module({
@@ -17,6 +18,7 @@ const { DB_HOST, DB_USER, DB_PASS, DB_NAME } = process.env;
     }),
     AuthModule,
     CommonModule,
+    CountryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
