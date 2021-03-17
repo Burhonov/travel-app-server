@@ -22,6 +22,15 @@ export class CountryService {
       .exec();
   }
 
+  async one(condition): Promise<Country> {
+    return this.countryModel
+      .findOne(condition)
+      .select(['-_id', '-__v'])
+      .populate('gallery')
+      .lean()
+      .exec();
+  }
+
   async insertMany(data): Promise<any[]> {
     const res = await Promise.all(
       data.map(async (country) => {

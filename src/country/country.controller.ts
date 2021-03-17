@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CountryService } from './country.service';
 import { Country } from './schemas/country.schema';
 
@@ -9,6 +9,13 @@ export class CountryController {
   @Get('countries')
   all(): Promise<Country[]> {
     return this.countryService.all();
+  }
+
+  @Get('countries/:name')
+  one(@Param('name') name): Promise<Country> {
+    return this.countryService.one({
+      name: new RegExp(['^', name, '$'].join(''), 'i'),
+    });
   }
 
   @Post('countries')
