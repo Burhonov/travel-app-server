@@ -9,4 +9,7 @@ export class RegisterDto {
 
   @IsNotEmpty()
   password_confirm: string;
+
+  @IsNotEmpty()
+  photo_url: string;
 }

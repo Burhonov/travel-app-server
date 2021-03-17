@@ -29,11 +29,12 @@ export class AuthController {
       throw new BadRequestException('Passwords do not match');
     }
 
-    const { username, password } = body;
+    const { username, password, photo_url } = body;
     const hashedPassword = await bcrypt.hash(password, 12);
     return await this.userService.create({
       username,
       password: hashedPassword,
+      photo_url,
     });
   }
 

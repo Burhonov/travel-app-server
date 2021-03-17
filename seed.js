@@ -72,7 +72,7 @@ const countriesData = [
     name: 'Spain',
     imageUrl:
       'https://abstour.by/upload/iblock/39b/39b113eee670389355bc92b6be574b44.jpg',
-    videoUrl: 'https://www.youtube.com/watch?v=clnt7kk6rIU',
+    videoUrl: 'IftfIk-pRwI',
     gallery: [
       {
         img:
