@@ -10,6 +10,9 @@ export class Country {
   name: string;
 
   @Prop()
+  capital: string;
+
+  @Prop()
   imageUrl: string;
 
   @Prop()
