@@ -16,6 +16,15 @@ import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { AuthGuard } from './auth.guard';
 
+function excludeFields(obj, excludedFields) {
+  return Object.entries(obj).reduce((acc, [key, val]) => {
+    if (excludedFields.includes(key)) {
+      return acc;
+    }
+    return { ...acc, [key]: val };
+  }, {});
+}
+
 @Controller()
 export class AuthController {
   constructor(
@@ -31,11 +40,12 @@ export class AuthController {
 
     const { username, password, photo_url } = body;
     const hashedPassword = await bcrypt.hash(password, 12);
-    return await this.userService.create({
+    const createdUser = await this.userService.create({
       username,
       password: hashedPassword,
       photo_url,
     });
+    return excludeFields(createdUser['_doc'], ['password']);
   }
 
   @Post('login')
@@ -58,7 +68,7 @@ export class AuthController {
 
     response.cookie('jwt', jwt, { httpOnly: true });
 
-    return user;
+    return excludeFields(user, ['password']);
   }
 
   @UseGuards(AuthGuard)
@@ -68,7 +78,10 @@ export class AuthController {
 
     const data = await this.jwtService.verifyAsync(cookie);
 
-    return await this.userService.findOne({ username: data['username'] });
+    const foundUser = await this.userService.findOne({
+      username: data['username'],
+    });
+    return excludeFields(foundUser, ['password']);
   }
 
   @UseGuards(AuthGuard)
