@@ -66,7 +66,11 @@ export class AuthController {
 
     const jwt = await this.jwtService.signAsync({ username: user.username });
 
-    response.cookie('jwt', jwt, { httpOnly: true });
+    response.cookie('jwt', jwt, {
+      httpOnly: true,
+      secure: true,
+      sameSite: false,
+    });
 
     return excludeFields(user, ['password']);
   }
