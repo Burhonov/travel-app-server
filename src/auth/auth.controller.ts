@@ -69,7 +69,7 @@ export class AuthController {
     response.cookie('jwt', jwt, {
       httpOnly: true,
       secure: true,
-      sameSite: false,
+      sameSite: 'none',
     });
 
     return excludeFields(user, ['password']);
